@@ -8,11 +8,11 @@ fn main() {
         let b = b.unwrap();
         let c = b as char;
         if c.is_control() {
-            println!("{:?} \r", b);
+            println!("{:#b} \r", b);
         } else {
-            println!("{:?} ({})\r", b, c);
+            println!("{:#b} ({})\r", b, c);
         }
-        if c == 'q' {
+        if b == 0b11 {
             break;
         }
     }
