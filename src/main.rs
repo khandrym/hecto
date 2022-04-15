@@ -1,5 +1,7 @@
-use crossterm::terminal;
-use std::io::{self, Read};
+use crossterm::{
+    event::{read, Event, KeyCode, KeyModifiers},
+    terminal,
+};
 
 fn die(e: std::io::Error) {
     panic!("{}", e);
@@ -8,19 +10,17 @@ fn die(e: std::io::Error) {
 fn main() {
     let _enable_raw_mode_result = terminal::enable_raw_mode();
 
-    for b in io::stdin().bytes() {
-        match b {
-            Ok(b) => {
-                let c = b as char;
-                if c.is_control() {
-                    println!("{:#b} \r", b);
-                } else {
-                    println!("{:#b} ({})\r", b, c);
+    loop {
+        match read() {
+            Ok(event) => match event {
+                Event::Key(key) => {
+                    if key.code == KeyCode::Char('c') && key.modifiers == KeyModifiers::CONTROL {
+                        break;
+                    }
+                    println!("{:?}", key)
                 }
-                if b == 0b11 {
-                    break;
-                }
-            }
+                _ => println!("{:?}", event),
+            },
             Err(e) => die(e),
         }
     }
