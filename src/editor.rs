@@ -6,7 +6,8 @@ use crossterm::{
 pub struct Editor {}
 
 impl Editor {
-    pub fn run(&self) {
+    /// Function to run editor.
+    pub fn run() {
         let _enable_raw_mode_result = terminal::enable_raw_mode();
 
         loop {
@@ -21,15 +22,12 @@ impl Editor {
                     }
                     _ => println!("{:?}", event),
                 },
-                Err(e) => die(&e),
+                Err(e) => die(&e.to_string()),
             }
         }
     }
-    pub fn default() -> Self {
-        Editor {}
-    }
 }
 
-fn die(e: &std::io::Error) {
-    panic!("{}", e);
+const fn die(error_message: &str) {
+    panic!("{}", error_message);
 }
