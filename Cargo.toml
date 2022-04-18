@@ -2,8 +2,11 @@
 name = "hecto"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Basic text editor in Rust"
+license = "MIT"
+repository = "https://github.com/khandrym/hecto"
+keywords = ["text editor"]
+categories = ["text-editors"]
 
 [dependencies]
 crossterm = "0.23"
