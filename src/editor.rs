@@ -11,20 +11,24 @@ impl Editor {
         let _enable_raw_mode_result = terminal::enable_raw_mode();
 
         loop {
-            match read() {
-                Ok(event) => match event {
-                    Event::Key(key) => {
-                        if key.code == KeyCode::Char('c') && key.modifiers == KeyModifiers::CONTROL
-                        {
-                            break;
-                        }
-                        println!("{:?}", key);
-                    }
-                    _ => println!("{:?}", event),
-                },
-                Err(e) => die(&e.to_string()),
+            if let Err(error) = process_keypress() {
+                die(&error.to_string());
             }
         }
+    }
+}
+
+fn process_keypress() -> Result<(), std::io::Error> {
+    let pressed_key = read()?;
+    match pressed_key {
+        Event::Key(key) => {
+            if key.code == KeyCode::Char('c') && key.modifiers == KeyModifiers::CONTROL {
+                panic!("Program end");
+            } else {
+                Ok(())
+            }
+        }
+        _ => Ok(()),
     }
 }
 
