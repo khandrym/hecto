@@ -1,6 +1,8 @@
+use std::io::{self, Write};
+
 use crossterm::{
     event::{read, Event, KeyCode, KeyModifiers},
-    terminal,
+    execute, terminal,
 };
 
 pub struct Editor {
@@ -13,11 +15,14 @@ impl Editor {
         let _enable_raw_mode_result = terminal::enable_raw_mode();
 
         loop {
-            if let Err(error) = self.process_keypress() {
+            if let Err(error) = refresh_screen() {
                 die(&error.to_string());
             }
             if self.should_quit {
                 break;
+            }
+            if let Err(error) = self.process_keypress() {
+                die(&error.to_string());
             }
         }
     }
@@ -33,6 +38,11 @@ impl Editor {
         }
         Ok(())
     }
+}
+
+fn refresh_screen() -> Result<(), std::io::Error> {
+    execute!(io::stdout(), terminal::Clear(terminal::ClearType::All))?;
+    io::stdout().flush()
 }
 
 const fn die(error_message: &str) {
