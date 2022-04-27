@@ -20,6 +20,7 @@ impl Editor {
                 die(&error.to_string());
             }
             if self.should_quit {
+                println!("Goodbye.\r");
                 break;
             }
             if let Err(error) = self.process_keypress() {
