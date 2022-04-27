@@ -1,6 +1,7 @@
 use std::io::{self, Write};
 
 use crossterm::{
+    cursor,
     event::{read, Event, KeyCode, KeyModifiers},
     execute, terminal,
 };
@@ -41,7 +42,11 @@ impl Editor {
 }
 
 fn refresh_screen() -> Result<(), std::io::Error> {
-    execute!(io::stdout(), terminal::Clear(terminal::ClearType::All))?;
+    execute!(
+        io::stdout(),
+        terminal::Clear(terminal::ClearType::All),
+        cursor::MoveTo(0, 0)
+    )?;
     io::stdout().flush()
 }
 
